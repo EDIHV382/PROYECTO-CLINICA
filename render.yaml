@@ -3,14 +3,9 @@
 services:
   - type: web
     name: mi-app-symfony
-    # La línea "env: php" se eliminó de aquí
+    # La línea "env: php" o "runtime: ..." se eliminó.
+    # Render auto-detecta PHP por el archivo composer.json.
     plan: free
-    buildFilter:
-      paths:
-        - .ebextensions/** # Ignora los archivos de AWS
-        - '**.md'
-      ignoredPaths:
-        - '**' # Construye en cualquier cambio que NO esté ignorado
     buildCommand: |
       # 1. Instala dependencias de PHP
       composer install --no-dev --optimize-autoloader
@@ -18,10 +13,10 @@ services:
       npm install
       # 3. Compila tus assets
       npm run build
-      # 4. Limpia la caché
-      php bin/console cache:clear --env:prod
-      # 5. EJECUTA LAS MIGRACIONES
-      php bin/console doctrine:migrations:migrate --env:prod --no-interaction --allow-no-migration
+      # 4. Limpia la caché (¡ERROR CORREGIDO!)
+      php bin/console cache:clear --env=prod
+      # 5. EJECUTA LAS MIGRACIONES (¡ERROR CORREGIDO!)
+      php bin/console doctrine:migrations:migrate --env=prod --no-interaction --allow-no-migration
     startCommand: XDG_CONFIG_HOME=/var/app/config /usr/bin/heroku-php-apache2 public/
     envVars:
       - key: APP_ENV
