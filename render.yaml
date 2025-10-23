@@ -1,9 +1,9 @@
 # render.yaml
 
-services:  # <--- Sección 1: Tus servicios web
+services:
   - type: web
     name: mi-app-symfony
-    env: php
+    # La línea "env: php" se eliminó de aquí
     plan: free
     buildFilter:
       paths:
@@ -19,22 +19,20 @@ services:  # <--- Sección 1: Tus servicios web
       # 3. Compila tus assets
       npm run build
       # 4. Limpia la caché
-      php bin/console cache:clear --env=prod
+      php bin/console cache:clear --env:prod
       # 5. EJECUTA LAS MIGRACIONES
-      php bin/console doctrine:migrations:migrate --env=prod --no-interaction --allow-no-migration
+      php bin/console doctrine:migrations:migrate --env:prod --no-interaction --allow-no-migration
     startCommand: XDG_CONFIG_HOME=/var/app/config /usr/bin/heroku-php-apache2 public/
     envVars:
       - key: APP_ENV
         value: prod
       - key: DATABASE_URL
         fromDatabase:
-          name: mi-base-de-datos-pg # <--- Este nombre debe coincidir abajo
+          name: mi-base-de-datos-pg
           property: connectionString
 
-databases: # <--- ¡SECCIÓN 2! Esta es la corrección.
-  - name: mi-base-de-datos-pg # <--- El nombre que usas arriba
+databases:
+  - name: mi-base-de-datos-pg
     databaseName: piesaluddb
     user: hermez382
     plan: free
-    # Nota: El tipo por defecto en Render es PostgreSQL,
-    # así que no necesitamos 'databaseType'.
