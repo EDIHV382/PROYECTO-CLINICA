@@ -33,8 +33,9 @@ services:
           property: connectionString
 
   # 2. La Base de Datos (TIPO CORREGIDO)
-  - type: postgres # <--- ¡ESTE ES EL CAMBIO!
+  - type: db           # <--- ¡ESTE ES EL CAMBIO! TIPO "db"
     name: mi-base-de-datos-pg
     databaseName: piesaluddb
     user: hermez382
+    databaseType: postgres   # <--- Y AQUÍ ESPECIFICAS "postgres"
     plan: free
