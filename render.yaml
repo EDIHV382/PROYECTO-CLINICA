@@ -3,19 +3,12 @@
 services:
   - type: web
     name: mi-app-symfony
-    # La línea "env: php" o "runtime: ..." se ha ELIMINADO.
-    # Render auto-detecta PHP por el archivo composer.json.
     plan: free
     buildCommand: |
-      # 1. Instala dependencias de PHP
       composer install --no-dev --optimize-autoloader
-      # 2. Instala dependencias de JS
       npm install
-      # 3. Compila tus assets
       npm run build
-      # 4. Limpia la caché (Sintaxis corregida a --env=prod)
       php bin/console cache:clear --env=prod
-      # 5. EJECUTA LAS MIGRACIONES (Sintaxis corregida a --env=prod)
       php bin/console doctrine:migrations:migrate --env=prod --no-interaction --allow-no-migration
     startCommand: XDG_CONFIG_HOME=/var/app/config /usr/bin/heroku-php-apache2 public/
     envVars:
