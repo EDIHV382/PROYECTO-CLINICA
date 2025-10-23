@@ -21,21 +21,20 @@ services:
       npm run build
       # 4. Limpia la caché
       php bin/console cache:clear --env=prod
-      # 5. EJECUTA LAS MIGRACIONES (para crear las tablas en la nueva BD)
+      # 5. EJECUTA LAS MIGRACIONES
       php bin/console doctrine:migrations:migrate --env=prod --no-interaction --allow-no-migration
     startCommand: XDG_CONFIG_HOME=/var/app/config /usr/bin/heroku-php-apache2 public/
     envVars:
       - key: APP_ENV
         value: prod
-      # Le decimos a Render que inyecte la URL de la BD que creamos abajo
       - key: DATABASE_URL
         fromDatabase:
-          name: mi-base-de-datos-pg # <--- ACTUALIZADO
+          name: mi-base-de-datos-pg
           property: connectionString
 
-  # 2. La Base de Datos (CAMBIADA A POSTGRES)
-  - type: psql # <--- CAMBIADO DE 'mysql' A 'psql'
-    name: mi-base-de-datos-pg # <--- CAMBIADO
+  # 2. La Base de Datos (TIPO CORREGIDO)
+  - type: postgres # <--- ¡ESTE ES EL CAMBIO!
+    name: mi-base-de-datos-pg
     databaseName: piesaluddb
     user: hermez382
-    plan: free # 'psql' SÍ está en el plan gratuito
+    plan: free
