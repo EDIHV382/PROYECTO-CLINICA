@@ -1,0 +1,41 @@
+# render.yaml
+# Este es tu "plano" para Render. Le dice qué construir.
+
+services:
+  # 1. El Servidor Web (Tu app Symfony)
+  - type: web
+    name: mi-app-symfony
+    env: php # Le dice que use PHP
+    plan: free # Usa la capa gratuita
+    buildFilter:
+      paths:
+        - .ebextensions/** # Ignora los archivos de AWS
+        - '**.md'
+      ignoredPaths:
+        - '**' # Construye en cualquier cambio que NO esté ignorado
+    buildCommand: |
+      # 1. Instala dependencias de PHP
+      composer install --no-dev --optimize-autoloader
+      # 2. Instala dependencias de JS (para Webpack Encore)
+      npm install
+      # 3. Compila tus assets
+      npm run build
+      # 4. Limpia la caché (aquí es seguro hacerlo)
+      php bin/console cache:clear --env=prod
+    # Comando para iniciar el servidor Apache
+    startCommand: XDG_CONFIG_HOME=/var/app/config /usr/bin/heroku-php-apache2 public/
+    envVars:
+      - key: APP_ENV
+        value: prod
+      # Le decimos a Render que inyecte la URL de la BD que creamos abajo
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mi-base-de-datos # Debe coincidir con el nombre de abajo
+          property: connectionString
+
+  # 2. La Base de Datos
+  - type: mysql # Usaremos MySQL para que sea compatible con tu .sql
+    name: mi-base-de-datos
+    databaseName: piesaluddb # El nombre de tu BD
+    user: hermez382 # Tu usuario
+    plan: free # Usa la capa gratuita de MySQL
