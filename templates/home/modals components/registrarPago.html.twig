@@ -1,0 +1,38 @@
+<div class="modal fade" id="modalPago" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold text-warning">Registrar Pago</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label">Paciente</label><input class="form-control" list="listaPacientes" placeholder="Seleccione o escriba el paciente"></div>
+            <div class="col-md-6"><label class="form-label">Monto</label><input type="number" class="form-control"></div>
+            <div class="col-md-6">
+              <label class="form-label">Método de Pago</label>
+              <select class="form-select">
+                <option>EFECTIVO</option>
+                <option>TARJETA</option>
+                <option>TRANSFERENCIA</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Tipo de Consulta</label>
+              <select class="form-select">
+                <option>NORMAL</option>
+                <option>REDUCIDA</option>
+              </select>
+            </div>
+            <div class="col-md-6"><label class="form-label">Fecha de Pago</label><input type="date" class="form-control" value="{{ hoy|date('Y-m-d') }}" readonly></div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-custom" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-warning btn-custom">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

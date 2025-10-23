@@ -1,20 +1,15 @@
-
-###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
+### Symfony ###
 /public/bundles/
+/public/build/
 /var/
 /vendor/
-###< symfony/framework-bundle ###
+/node_modules/
+/composer.phar
 
-###> phpunit/phpunit ###
-/phpunit.xml
-/.phpunit.cache/
-###< phpunit/phpunit ###
+### Archivos de Entorno ###
+.env
+.env.local
+.env.*.local
 
-###> symfony/asset-mapper ###
-/public/assets/
-/assets/vendor/
-###< symfony/asset-mapper ###
+### Archivos de Sistema ###
+*.DS_Store

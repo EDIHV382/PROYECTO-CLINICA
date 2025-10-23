@@ -1,0 +1,39 @@
+<div class="modal fade" id="modalSeleccionarUsuario" tabindex="-1" aria-labelledby="modalSeleccionarUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="modalSeleccionarUsuarioLabel">
+                    <i class="mdi mdi-account-search-outline fs-4"></i> Generar Corte de Caja
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="corte-date-input" class="form-label">Fecha del Corte</label>
+                    <input type="date" id="corte-date-input" class="form-control" value="{{ "now"|date("Y-m-d") }}">
+                </div>
+                <div class="mb-3">
+                    <label for="user-search-input" class="form-label">Seleccionar Usuario</label>
+                    <input type="text" id="user-search-input" class="form-control" placeholder="Buscar usuario...">
+                </div>
+                <ul class="list-group" style="max-height: 250px; overflow-y: auto;">
+                    {% if usuarios is defined and usuarios|length > 0 %}
+                        {% for usuario in usuarios %}
+                            <a href="#" class="list-group-item list-group-item-action user-select-item" data-user-id="{{ usuario.id }}">
+                                {{ usuario.name }}
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item">No se encontraron usuarios.</li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="generate-corte-btn" disabled>
+                    Generar Reporte
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

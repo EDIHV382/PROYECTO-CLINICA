@@ -1,0 +1,26 @@
+<div class="modal fade" id="modalRegistrarPaciente" tabindex="-1" aria-labelledby="modalRegistrarPacienteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            {{ form_start(formRegistrar, {'attr': {'id': 'form-registrar-paciente'}}) }}
+            <div class="modal-header">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="modalRegistrarPacienteLabel">
+                    <i class="mdi mdi-account-plus-outline fs-4"></i> Registrar Paciente
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-md-6">{{ form_row(formRegistrar.nombre) }}</div>
+                    <div class="col-md-6">{{ form_row(formRegistrar.telefono) }}</div>
+                    <div class="col-md-6">{{ form_row(formRegistrar.fechaNacimiento) }}</div>
+                    <div class="col-md-6">{{ form_row(formRegistrar.sexo) }}</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+            {{ form_end(formRegistrar) }}
+        </div>
+    </div>
+</div>

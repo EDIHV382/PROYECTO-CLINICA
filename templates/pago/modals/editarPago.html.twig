@@ -1,0 +1,29 @@
+<div class="modal fade" id="modalEditarPago-{{ pago.id }}" tabindex="-1" aria-labelledby="modalEditarPagoLabel-{{ pago.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            {{ form_start(form, {'attr': {'id': 'form-editar-pago-' ~ pago.id}}) }}
+            <div class="modal-header">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="modalEditarPagoLabel-{{ pago.id }}">
+                    <i class="mdi mdi-cash-edit fs-4"></i> Editar Pago
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    {# Usamos form_row para simplicidad, ya que el form type lo controla todo #}
+                    <div class="col-12">{{ form_row(form.paciente) }}</div>
+                    <div class="col-md-4">{{ form_row(form.monto) }}</div>
+                    <div class="col-md-4">{{ form_row(form.metodo_pago) }}</div>
+                    <div class="col-md-4">{{ form_row(form.tipo_consulta) }}</div>
+                    {# La fecha no es editable aquí, se toma la del día de la edición #}
+                    {{ form_row(form.fecha_pago, {'attr': {'style': 'display:none'}}) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Actualizar Pago</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

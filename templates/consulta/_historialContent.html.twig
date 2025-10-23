@@ -1,0 +1,28 @@
+<div class="main-content-card mt-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">Historial de {{ paciente.nombre }}</h5>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalRegistrarConsulta">
+            <i class="mdi mdi-plus me-2"></i> Nueva Consulta
+        </button>
+    </div>
+    <div class="table-responsive">
+        <table class="table command-table mb-0">
+            <thead><tr><th>Fecha</th><th>Motivo</th><th class="text-end">Acciones</th></tr></thead>
+            <tbody id="consultas-table-body">
+                {% for consulta in consultas %}
+                    {{ include('consulta/_consultaFila.html.twig', {consulta: consulta}) }}
+                {% else %}
+                    <tr id="no-consultas-row"><td colspan="3" class="text-center p-5">Este paciente aún no tiene consultas registradas.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="modals-consultas-container">
+    {{ include('consulta/modals/registrarConsulta.html.twig', {form: formRegistrar}) }}
+    {% for consulta in consultas %}
+        {{ include('consulta/modals/editarConsulta.html.twig', {form: formsEditar[consulta.id], consulta: consulta}) }}
+    {% endfor %}
+    {{ include('consulta/modals/eliminarConsulta.html.twig') }}
+</div>

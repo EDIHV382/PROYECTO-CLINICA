@@ -1,0 +1,86 @@
+{% extends 'baseClinica.html.twig' %}
+{% block title %}Movimientos de Caja{% endblock %}
+{% block body %}
+<div id="notification-container" style="position: fixed; top: 85px; right: 1rem; z-index: 1056;"></div>
+<script id="flash-messages-data" type="application/json">{{ app.flashes|json_encode|raw }}</script>
+<div class="container-fluid py-5">
+    <div class="row g-4 command-center-layout">
+        <div class="col-lg-3">
+             <div class="command-sidebar">
+                <h4 class="sidebar-title mb-4">Acciones de Caja</h4>
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalRegistrarPago"><i class="mdi mdi-cash-plus me-2"></i> Nuevo Ingreso</button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalRegistrarGasto"><i class="mdi mdi-cash-minus me-2"></i> Nuevo Egreso</button>
+                </div>
+                <div class="sidebar-section">
+                    <h6 class="section-heading">Filtrar por Fecha</h6>
+                    <form method="get" action="{{ path('app_pago_index') }}">
+                        <div class="mb-3">
+                            <label for="fecha-filtro" class="form-label">Seleccionar fecha</label>
+                            <input type="date" id="fecha-filtro" name="fecha" class="form-control" value="{{ fecha_filtro ? fecha_filtro : 'now'|date('Y-m-d') }}">
+                        </div>
+                        <div class="d-grid gap-2">
+                           <button type="submit" class="btn btn-info text-white">Filtrar</button>
+                           <a href="{{ path('app_pago_index') }}" class="btn btn-secondary">Ver Hoy</a>
+                           <a href="{{ path('app_pago_index', {'todos': 1}) }}" class="btn btn-outline-secondary">Mostrar Todos</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="main-content-card h-100">
+                        <div class="card-header"><h5 class="card-title mb-0">Ingresos (Pagos)</h5></div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0 command-table">
+                                    <thead><tr><th>Monto</th><th>Paciente</th><th class="text-end">Acciones</th></tr></thead>
+                                    <tbody id="pagos-table-body">
+                                        {% for pago in pagos %}{{ include('pago/_pagoFila.html.twig', {pago: pago}) }}{% else %}
+                                            <tr id="no-pagos-row"><td colspan="3" class="text-center p-4 text-muted">No hay ingresos.</td></tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                         {% if pagos.pageCount > 1 %}
+                            <div class="card-footer d-flex justify-content-center">{{ knp_pagination_render(pagos) }}</div>
+                         {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="main-content-card h-100">
+                        <div class="card-header"><h5 class="card-title mb-0">Egresos (Gastos)</h5></div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0 command-table">
+                                    <thead><tr><th>Monto</th><th>Descripción</th></tr></thead>
+                                    <tbody id="gastos-table-body">
+                                        {% for gasto in gastos %}
+                                            {{ include('gasto/_gastoFila.html.twig', {gasto: gasto}) }}
+                                        {% else %}
+                                            <tr id="no-gastos-row"><td colspan="2" class="text-center p-4 text-muted">No hay egresos.</td></tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modals-pagos-container">
+    {{ include('pago/modals/registrarPago.html.twig') }}
+    {% for pago in pagos %}
+        {{ include('pago/modals/editarPago.html.twig', {'pago': pago, 'form': formsEditar[pago.id]}) }}
+    {% endfor %}
+    {{ include('pago/modals/eliminarPago.html.twig') }}
+</div>
+<div id="modals-gastos-container">
+    {{ include('gasto/modals/registrarGasto.html.twig') }}
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+<div class="modal fade" id="modalRegistrarCita" tabindex="-1" aria-labelledby="modalRegistrarCitaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            {{ form_start(formRegistrar, {'attr': {'id': 'form-registrar-cita'}}) }}
+            <div class="modal-header">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="modalRegistrarCitaLabel">
+                    <i class="mdi mdi-calendar-plus fs-4"></i> Registrar Cita
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-12">
+                        {{ form_label(formRegistrar.paciente) }}
+                        {{ form_widget(formRegistrar.paciente, {'attr': {'class': 'form-select'}}) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(formRegistrar.fecha) }}
+                        {{ form_widget(formRegistrar.fecha, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end pb-2">
+                        <div class="form-check form-switch">
+                            {{ form_widget(formRegistrar.asistio, {'attr': {'class': 'form-check-input'}}) }}
+                            {{ form_label(formRegistrar.asistio, 'El paciente asistió a la cita', {'label_attr': {'class': 'form-check-label'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar Cita</button>
+            </div>
+            {{ form_end(formRegistrar) }}
+        </div>
+    </div>
+</div>

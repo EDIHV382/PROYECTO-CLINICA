@@ -1,0 +1,27 @@
+<div class="modal fade" id="modalEditarPost-{{ post.id }}" tabindex="-1" aria-labelledby="modalEditarPostLabel-{{ post.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            {{ form_start(form, {'attr': {'id': 'form-editar-post-' ~ post.id}}) }}
+            <div class="modal-header">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="modalEditarPostLabel-{{ post.id }}">
+                    <i class="mdi mdi-pencil-box-outline fs-4"></i> Editar Publicación
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-12">{{ form_row(form.title) }}</div>
+                    <div class="col-12">{{ form_row(form.categoria) }}</div>
+                    <div class="col-12">{{ form_row(form.content) }}</div>
+                    <div class="col-12">{{ form_row(form.imageFile) }}</div>
+                    <div class="col-12 form-check form-switch">{{ form_row(form.enabled) }}</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Actualizar Publicación</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="modal fade" id="modalRegistrarPost" tabindex="-1" aria-labelledby="modalRegistrarPostLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            {{ form_start(formRegistrar, {'attr': {'id': 'form-registrar-post'}}) }}
+            <div class="modal-header">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="modalRegistrarPostLabel">
+                    <i class="mdi mdi-plus-circle-outline fs-4"></i> Nueva Publicación
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-12">{{ form_row(formRegistrar.title) }}</div>
+                    <div class="col-12">{{ form_row(formRegistrar.categoria) }}</div>
+                    <div class="col-12">{{ form_row(formRegistrar.content) }}</div>
+                    <div class="col-12">{{ form_row(formRegistrar.imageFile) }}</div>
+                    <div class="col-12 form-check form-switch">{{ form_row(formRegistrar.enabled) }}</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Publicar</button>
+            </div>
+            {{ form_end(formRegistrar) }}
+        </div>
+    </div>
+</div>

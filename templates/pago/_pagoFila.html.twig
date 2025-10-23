@@ -1,0 +1,32 @@
+<tr id="pago-row-{{ pago.id }}">
+    <td class="fw-semibold">${{ pago.monto|number_format(2, '.', ',') }}</td>
+    <td>{{ pago.paciente.nombre }}</td>
+    <td><span class="badge bg-secondary">{{ pago.metodoPago }}</span></td>
+    <td>{{ pago.fechaPago|date('d/m/Y') }}</td>
+    
+    {# --- LÍNEA CORREGIDA --- #}
+    <td>{{ pago.registradoPor ? pago.registradoPor.name : 'No asignado' }}</td>
+
+    <td class="text-end">
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Acciones">
+                <i class="mdi mdi-dots-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalEditarPago-{{ pago.id }}">
+                        <i class="mdi mdi-pencil me-2"></i> Editar
+                    </a>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item text-danger delete-pago-btn"
+                            data-pago-info="el pago de <strong>${{ pago.monto|number_format(2) }}</strong> de <strong>{{ pago.paciente.nombre }}</strong>"
+                            data-delete-url="{{ path('app_pago_eliminar', {'id': pago.id}) }}"
+                            data-csrf-token="{{ csrf_token('eliminar' ~ pago.id) }}">
+                        <i class="mdi mdi-delete me-2"></i> Eliminar
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </td>
+</tr>

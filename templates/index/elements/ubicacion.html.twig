@@ -1,0 +1,138 @@
+<section class="ubicacion-section">
+    <div class="container">
+        <div class="text-center mx-auto" style="max-width: 600px;">
+            <h2 class="section-title">Visítanos</h2>
+            <p class="section-subtitle">
+                Encuentra nuestro horario de atención y la ubicación exacta de nuestra clínica. ¡Estamos para servirte!
+            </p>
+        </div>
+        <div class="row g-4 g-lg-5 justify-content-center">
+
+            <div class="col-lg-5 d-flex">
+                <div class="info-card w-100">
+                    <h3 class="info-card-title">
+                        <i class="mdi mdi-clock-outline me-2"></i>Horario de Atención
+                    </h3>
+                    <div class="table-responsive">
+                        <table class="table schedule-table text-center align-middle mb-0">
+                            <tbody>
+                                {% set horarios = {
+                                    'Lunes': '09:30 - 15:30',
+                                    'Martes': '09:30 - 15:30',
+                                    'Miércoles': '09:30 - 15:30',
+                                    'Jueves': '09:30 - 15:30',
+                                    'Viernes': '09:30 - 15:30',
+                                    'Sábado': '09:30 - 15:30',
+                                    'Domingo': 'Cerrado'
+                                } %}
+                                {% for dia, hora in horarios %}
+                                    <tr>
+                                        <td class="day-cell">{{ dia }}</td>
+                                        <td class="{{ dia == 'Domingo' ? 'closed-cell' : 'time-cell' }}">{{ hora }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 d-flex">
+                <div class="info-card w-100">
+                    <h3 class="info-card-title">
+                        <i class="mdi mdi-map-marker-radius me-2"></i>Nuestra Ubicación
+                    </h3>
+                    <p class="info-card-address">
+                        Av. Nicolás Bravo esquina Melchor Ocampo, Cosamaloapan de Carpio, Ver.
+                    </p>
+                    <div class="ratio ratio-16x9 map-container">
+                        <iframe
+                           src="https://www.google.com/maps?q=18.366566,-95.796792&z=15&output=embed"
+                            style="border:0;"
+                            allowfullscreen
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Ubicación Clínica Pie Diabético">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Estilos de Ubicación */
+.ubicacion-section {
+    padding: 5rem 0;
+    background-color: var(--color-bg);
+}
+.info-card {
+    background-color: var(--color-sidebar);
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 6px var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+}
+.info-card-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+.info-card-address {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+.map-container {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    flex-grow: 1; /* Hace que el mapa ocupe el espacio disponible */
+}
+.map-container iframe {
+    transition: filter 0.3s ease;
+    filter: grayscale(0.3);
+}
+.map-container iframe:hover {
+    filter: grayscale(0);
+}
+body.dark-mode .map-container iframe {
+    filter: invert(0.9) hue-rotate(180deg) grayscale(0.4);
+}
+body.dark-mode .map-container iframe:hover {
+    filter: invert(0.9) hue-rotate(180deg) grayscale(0);
+}
+
+/* --- Nuevo Diseño de Tabla --- */
+.schedule-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+.schedule-table td {
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color 0.2s ease;
+}
+.schedule-table tr:last-child td {
+    border-bottom: none; 
+}
+.schedule-table .day-cell {
+    font-weight: 600;
+    text-align: left;
+    color: var(--color-text);
+}
+.schedule-table .time-cell {
+    font-family: monospace;
+    font-size: 1.1rem;
+}
+.schedule-table .closed-cell {
+    font-weight: 600;
+    color: var(--color-danger);
+}
+</style>

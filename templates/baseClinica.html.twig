@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Consultorio Médico{% endblock %}</title>
+    {{ encore_entry_link_tags('app-clinica') }}
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+    {% include 'components/Sidebar.html.twig' %}
+    {% include 'components/Navbar.html.twig' with {'has_sidebar': true} %}
+    <main id="page-content">
+        {% block body %}{% endblock %}
+    </main>
+    {{ encore_entry_script_tags('app-clinica') }}
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

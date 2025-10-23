@@ -1,0 +1,82 @@
+{% set has_sidebar = has_sidebar|default(false) %}
+
+<nav class="navbar fixed-top">
+    <div class="container-fluid">
+        <div class="d-flex align-items-center gap-3">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ path('app_index') }}">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" />
+                <span class="d-none d-md-inline">Consultorio Médico</span>
+            </a>
+            {% if has_sidebar %}
+                <button id="sidebarToggle" class="navbar-icon-button" type="button" aria-label="Toggle sidebar" title="Mostrar/Ocultar menú">
+                    <i class="mdi mdi-menu mdi-24px"></i>
+                </button>
+            {% endif %}
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            {% if has_sidebar and app.user %}
+                <div class="user-profile d-flex align-items-center gap-2">
+                    <div class="user-avatar">{{ app.user.name|default('U')|first|upper }}</div>
+                    <span class="user-name-text d-none d-sm-inline fw-semibold">{{ app.user.name|default('Usuario') }}</span>
+                </div>
+            {% endif %}
+            <button id="darkModeToggle" class="navbar-icon-button theme-toggle-button" aria-label="Toggle dark mode" title="Cambiar tema">
+                <span id="darkModeIcon" class="mdi mdi-weather-night mdi-24px"></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<style>
+/* =================================================================
+   ESTILOS COMPLETOS PARA NAVBAR
+================================================================= */
+.navbar-icon-button {
+    background-color: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.navbar-icon-button:hover,
+.navbar-icon-button:focus {
+    color: var(--color-text);
+    background-color: var(--color-border);
+    outline: none;
+}
+
+/* --- Perfil de Usuario --- */
+.user-profile {
+    color: var(--color-text);
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.user-name-text {
+    font-size: 0.95rem;
+}
+
+/* --- Adaptación para Modo Oscuro (heredado de las variables) --- */
+body.dark-mode .user-avatar {
+    background-color: var(--color-primary-dark);
+    color: var(--color-text);
+}
+</style>

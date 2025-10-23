@@ -1,0 +1,155 @@
+{% set currentRoute = app.request.get('_route') %}
+
+<aside id="sidebar">
+    <div>
+        <div class="sidebar-header">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo" />
+            <span class="brand-name">Consultorio</span>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item">
+                <a href="{{ path('app_paciente_index') }}" class="nav-link {{ currentRoute starts with 'app_paciente_' ? 'active' : '' }}">
+                    <i class="mdi mdi-account-group-outline nav-icon"></i>
+                    <span class="nav-text">Pacientes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_cita_index') }}" class="nav-link {{ currentRoute starts with 'app_cita_' ? 'active' : '' }}">
+                    <i class="mdi mdi-calendar-month-outline nav-icon"></i>
+                    <span class="nav-text">Citas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_pago_index') }}" class="nav-link {{ currentRoute starts with 'app_pago_' ? 'active' : '' }}">
+                    <i class="mdi mdi-cash-multiple nav-icon"></i>
+                    <span class="nav-text">Pagos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_blog_index') }}" class="nav-link {{ currentRoute starts with 'app_blog_' ? 'active' : '' }}">
+                    <i class="mdi mdi-post-outline nav-icon"></i>
+                    <span class="nav-text">Blog</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_corte_caja_index') }}" class="nav-link {{ currentRoute starts with 'app_corte_caja_' ? 'active' : '' }}">
+                    <i class="mdi mdi-calculator nav-icon"></i>
+                    <span class="nav-text">Corte de Caja</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="sidebar-footer">
+        <a href="{{ path('app_logout') }}" class="nav-link">
+            <i class="mdi mdi-logout nav-icon"></i>
+            <span class="nav-text">Cerrar Sesión</span>
+        </a>
+    </div>
+</aside>
+
+<style>
+/* --- Estilos específicos del Sidebar y su Layout --- */
+:root {
+    --sidebar-width: 260px;
+    --sidebar-width-collapsed: 80px;
+}
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: var(--sidebar-width);
+    background-color: var(--color-sidebar);
+    border-right: 1px solid var(--color-border);
+    z-index: 1020;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#sidebar.collapsed {
+    width: var(--sidebar-width-collapsed);
+}
+#page-content {
+    padding-top: 90px;
+    padding-left: var(--sidebar-width);
+    padding-right: 1.5rem;
+    padding-bottom: 1.5rem;
+    transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#page-content.sidebar-hidden {
+    padding-left: var(--sidebar-width-collapsed);
+}
+.sidebar-header {
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    height: 73px;
+    flex-shrink: 0;
+}
+.sidebar-header .logo {
+    height: 36px;
+    width: 36px;
+}
+.sidebar-header .brand-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text);
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+#sidebar.collapsed .sidebar-header .brand-name {
+    opacity: 0;
+    pointer-events: none;
+}
+.nav-links {
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+    overflow-y: auto;
+}
+.nav-links .nav-item a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.5rem;
+    margin: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.nav-links .nav-item a:hover {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+.nav-links .nav-item a.active {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-weight: 600;
+}
+.nav-links .nav-item .nav-icon {
+    font-size: 1.5rem;
+    width: 24px;
+    flex-shrink: 0;
+}
+#sidebar.collapsed .nav-links .nav-item a {
+    justify-content: center;
+    padding: 0.9rem 0;
+}
+#sidebar.collapsed .nav-links .nav-item .nav-text {
+    display: none;
+}
+
+.sidebar-footer {
+    padding: 1rem 0.75rem;
+    border-top: 1px solid var(--color-border);
+    flex-shrink: 0;
+}
+</style>

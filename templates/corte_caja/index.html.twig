@@ -1,0 +1,92 @@
+{% extends 'baseClinica.html.twig' %}
+
+{% block title %}Corte de Caja{% endblock %}
+
+{% block body %}
+<div id="notification-container" style="position: fixed; top: 85px; right: 1rem; z-index: 1056;"></div>
+<script id="flash-messages-data" type="application/json">{{ app.flashes|json_encode|raw }}</script>
+
+<div class="container-fluid py-5">
+    <header class="page-header">
+        <div>
+            <h2 class="page-title">Corte de Caja</h2>
+            <p class="page-subtitle">Genera reportes de caja por usuario y fecha.</p>
+        </div>
+        <div class="page-actions">
+            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#modalSeleccionarUsuario">
+                <i class="mdi mdi-calculator me-2"></i>
+                Generar Nuevo Corte
+            </button>
+        </div>
+    </header>
+
+    {% if selectedUser and form %}
+        <div class="main-content-card mb-4">
+            {{ form_start(form, {'attr': {'id': 'form-corte-caja'}}) }}
+            <div class="card-header">
+                <h5 class="card-title mb-0">Detalle del Corte para <strong>{{ selectedUser.name }}</strong> - {{ fecha_filtro|date('d/m/Y') }}</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-4">
+                    <div class="col-lg-7 order-lg-2">
+                        <h6 class="section-heading">Datos del Cierre Manual</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">{{ form_row(form.efectivo_inicial) }}</div>
+                            <div class="col-md-6">{{ form_row(form.efectivo_final) }}</div>
+                            <div class="col-12">{{ form_row(form.observacion) }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-5">
+                        <h6 class="section-heading">Resumen Automático del Día</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between"><span>Ingresos en Efectivo:</span> <strong id="total-efectivo-calculado">+${{ corte_caja_calculado.totalEfectivo|number_format(2) }}</strong></li>
+                            <li class="list-group-item d-flex justify-content-between text-danger"><span>Total Egresos (Gastos):</span> <strong id="total-gastos-calculado">-${{ corte_caja_calculado.totalGastos|number_format(2) }}</strong></li>
+                            <li class="list-group-item d-flex justify-content-between"><span>Ingresos con Tarjeta:</span> <strong>${{ corte_caja_calculado.totalTerminal|number_format(2) }}</strong></li>
+                            <li class="list-group-item d-flex justify-content-between"><span>Ingresos por Transferencia:</span> <strong>${{ corte_caja_calculado.totalTransferencia|number_format(2) }}</strong></li>
+                            <li class="list-group-item d-flex justify-content-between bg-light fw-bold"><span>Total General de Ventas:</span> <span class="text-primary">${{ corte_caja_calculado.totalGeneral|number_format(2) }}</span></li>
+                        </ul>
+                        <h6 class="section-heading mt-3">Cálculo de Cierre de Caja</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between"><span>Efectivo esperado en Caja:</span> <strong id="total-en-caja">$0.00</strong></li>
+                            <li class="list-group-item d-flex justify-content-between fs-5"><strong>Diferencia:</strong> <strong id="diferencia-corte">$0.00</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <button type="submit" class="btn btn-success btn-lg"><i class="mdi mdi-content-save-check me-2"></i> Guardar y Cerrar Corte</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+
+    <div class="main-content-card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Historial de Cortes Registrados</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 command-table">
+                    <thead><tr><th>Fecha</th><th>Usuario</th><th>Total Ventas</th><th class="text-end">Diferencia de Caja</th></tr></thead>
+                    <tbody id="cortes-table-body">
+                    {% for corte in cortes %}
+                        <tr>
+                            <td class="fw-semibold">{{ corte.fecha|date('d/m/Y') }}</td>
+                            <td>{{ corte.usuario.name }}</td>
+                            <td><strong>${{ corte.totalGeneral|number_format(2) }}</strong></td>
+                            <td class="text-end fw-semibold {% set diferencia = corte.efectivoFinal - (corte.efectivoInicial + corte.totalEfectivo - corte.totalGastos) %} {{ diferencia > 0 ? 'text-success' : (diferencia < 0 ? 'text-danger' : '') }}">${{ diferencia|number_format(2) }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="4" class="text-center text-muted py-4">No hay cortes registrados.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-center">{{ knp_pagination_render(cortes) }}</div>
+    </div>
+</div>
+
+{{ include('corte_caja/modals/_seleccionarUsuarioModal.html.twig') }}
+{% endblock %}

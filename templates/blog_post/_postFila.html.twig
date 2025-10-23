@@ -1,0 +1,43 @@
+<tr id="post-row-{{ post.id }}">
+    <td class="fw-semibold">{{ post.title }}</td>
+    <td>
+        {% if post.imageFilename %}
+            <img src="{{ asset('uploads/images/' ~ post.imageFilename) }}" alt="Imagen" class="img-thumbnail" style="max-height: 50px; max-width: 80px; object-fit: cover;">
+        {% else %}
+            <span class="text-muted small">Sin imagen</span>
+        {% endif %}
+    </td>
+    <td>
+        <span class="badge bg-info text-dark">{{ post.categoria }}</span>
+    </td>
+    <td>
+        {% if post.enabled %}
+            <span class="status-badge status-badge-success">Sí</span>
+        {% else %}
+            <span class="status-badge status-badge-secondary">No</span>
+        {% endif %}
+    </td>
+    <td>{{ post.createdAt|date('d/m/Y') }}</td>
+    <td class="text-end">
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-config='{"strategy":"fixed"}' aria-expanded="false" aria-label="Acciones">
+                <i class="mdi mdi-dots-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalEditarPost-{{ post.id }}">
+                        <i class="mdi mdi-pencil me-2"></i> Editar
+                    </a>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item text-danger delete-post-btn"
+                            data-post-info="la publicación <strong>{{ post.title }}</strong>"
+                            data-delete-url="{{ path('app_blog_delete', {'id': post.id}) }}"
+                            data-csrf-token="{{ csrf_token('delete' ~ post.id) }}">
+                        <i class="mdi mdi-delete me-2"></i> Eliminar
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </td>
+</tr>

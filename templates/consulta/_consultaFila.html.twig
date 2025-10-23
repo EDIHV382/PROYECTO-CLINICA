@@ -1,0 +1,18 @@
+<tr id="consulta-row-{{ consulta.id }}">
+    <td>{{ consulta.fechaConsulta|date('d/m/Y H:i') }}</td>
+    <td class="fw-semibold">{{ consulta.motivo|slice(0, 50) ~ '...' }}</td>
+    <td class="text-end">
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-config='{"strategy":"fixed"}' aria-expanded="false" aria-label="Acciones">
+                <i class="mdi mdi-dots-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalEditarConsulta-{{ consulta.id }}">Editar</a></li>
+                <li><button type="button" class="dropdown-item text-danger delete-consulta-btn" 
+                    data-consulta-info="la consulta de <strong>{{ consulta.paciente.nombre }}</strong>" 
+                    data-delete-url="{{ path('app_consulta_eliminar', {id: consulta.id}) }}" 
+                    data-csrf-token="{{ csrf_token('eliminar_consulta' ~ consulta.id) }}">Eliminar</button></li>
+            </ul>
+        </div>
+    </td>
+</tr>

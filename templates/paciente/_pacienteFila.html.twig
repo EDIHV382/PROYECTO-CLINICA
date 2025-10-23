@@ -1,0 +1,28 @@
+<tr id="paciente-row-{{ paciente.id }}">
+    <td class="fw-semibold">{{ paciente.nombre }}</td>
+    <td>{{ paciente.fechaNacimiento ? paciente.fechaNacimiento|date('d/m/Y') : '-' }}</td>
+    <td>{{ paciente.sexo == 'M' ? 'Masculino' : 'Femenino' }}</td>
+    <td>{{ paciente.telefono }}</td>
+    <td class="text-end">
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-config='{"strategy":"fixed"}' aria-expanded="false" aria-label="Acciones">
+                <i class="mdi mdi-dots-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalEditarPaciente-{{ paciente.id }}">
+                        <i class="mdi mdi-pencil me-2"></i> Editar
+                    </a>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item text-danger delete-btn"
+                            data-patient-name="{{ paciente.nombre }}"
+                            data-delete-url="{{ path('app_paciente_eliminar', {'id': paciente.id}) }}"
+                            data-csrf-token="{{ csrf_token('eliminar' ~ paciente.id) }}">
+                        <i class="mdi mdi-delete me-2"></i> Eliminar
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </td>
+</tr>
