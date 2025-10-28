@@ -21,10 +21,11 @@
         {% endif %}
     </div>
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 patient-card-grid">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 patient-card-grid" 
+         data-historial-url="{{ path('app_consulta_historial', {id: '__ID__'}) }}">
         {% for paciente in pacientes %}
             <div class="col">
-                <div class="patient-card" data-paciente-id="{{ paciente.id }}">
+                <div class="patient-card" data-paciente-id="{{ paciente.id }}" data-paciente-name="{{ paciente.nombre }}">
                     <div class="patient-avatar"><i class="mdi mdi-{{ paciente.sexo == 'M' ? 'face-man' : 'face-woman' }}"></i></div>
                     <h5 class="patient-name">{{ paciente.nombre }}</h5>
                 </div>
@@ -50,7 +51,7 @@
     .patient-card {
         background-color: var(--color-surface); border: 2px solid var(--color-border);
         border-radius: 1rem; padding: 1.5rem; text-align: center;
-        height: 100%; cursor: pointer; transition: all 0.3s ease;
+        height: 100%; cursor: pointer; transition: all 0.2s ease-in-out;
     }
     .patient-card:hover {
         transform: translateY(-5px); box-shadow: 0 8px 20px var(--shadow-md);
@@ -58,26 +59,10 @@
     }
     .patient-card.active {
         border-color: var(--color-primary);
-        box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.3);
+        box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb), 0.2);
         transform: translateY(-5px);
     }
     .patient-avatar { font-size: 3rem; color: var(--color-primary); margin-bottom: 1rem; }
     .patient-name { font-size: 1.1rem; font-weight: 600; }
-    #historial-container .main-content-card {
-        border: 1px solid var(--color-border);
-        border-radius: 1rem;
-        box-shadow: 0 4px 20px var(--shadow-sm);
-        overflow: hidden;
-        background-color: var(--color-surface);
-    }
-    #historial-container .card-header {
-        padding: 1.5rem 2rem;
-    }
-    #historial-container .command-table th {
-        background-color: var(--color-background);
-    }
-    body.dark-mode #historial-container .command-table th {
-        background-color: var(--color-surface);
-    }
 </style>
 {% endblock %}

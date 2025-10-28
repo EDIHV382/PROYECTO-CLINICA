@@ -97,10 +97,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body-content p-0">
-                <img src="" alt="" id="modal-post-image" class="img-fluid" style="display: none; max-height: 400px; width: 100%; object-fit: cover;">
+                <img src="" alt="" id="modal-post-image" class="modal-post-image-full" style="display: none;">
                 <div class="p-4">
-                    <p class="text small" id="modal-post-meta"></p>
-                    <div class="modal-body fs-5" id="modal-post-body" style="line-height: 1.8;"></div>
+                    <p class="modal-post-meta-text" id="modal-post-meta"></p>
+                    <div class="modal-post-body-text" id="modal-post-body"></div>
                 </div>
             </div>
         </div>
@@ -330,6 +330,32 @@ body.dark-mode .post-item:hover {
         display: flex;
         align-items: center;
         gap: 0.5rem;
+    }
+    .modal-content {
+        background-color: #1e293b;
+        color: #e2e8f0;
+        border: 1px solid #334155;
+        border-radius: 1rem;
+    }
+    .modal-header { border-color: #334155; }
+    .modal-title { font-weight: 600; font-size: 1.8rem; color: #fff; }
+    .btn-close { filter: invert(1) grayscale(100%) brightness(200%); }
+    .modal-post-image-full {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        display: block;
+    }
+    .modal-post-meta-text {
+        color: #5eead4;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    .modal-post-body-text {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #cbd5e1;
     }
 </style>
 {% endblock %}

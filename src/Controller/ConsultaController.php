@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/consultas')]
+#[Route('/clinica/consultas')]
 class ConsultaController extends AbstractController
 {
     public function __construct(
@@ -36,18 +36,28 @@ class ConsultaController extends AbstractController
     }
 
     #[Route('/historial/{id}', name: 'app_consulta_historial', methods: ['GET'])]
-    public function historial(Paciente $paciente, ConsultaRepository $consultaRepo): JsonResponse
+    public function historial(int $id, PacienteRepository $pacienteRepo, ConsultaRepository $consultaRepo): JsonResponse
     {
+        $paciente = $pacienteRepo->find($id);
+        if (!$paciente) {
+            return new JsonResponse(['success' => false, 'html' => 'Paciente no encontrado.'], 404);
+        }
+
         $consultas = $consultaRepo->findBy(['paciente' => $paciente], ['fechaConsulta' => 'DESC']);
         
-        $formRegistrar = $this->createForm(ConsultaType::class, null, [
-            'action' => $this->generateUrl('app_consulta_crear', ['pacienteId' => $paciente->getId()])
+        // --- LA CORRECCIÓN ESTÁ AQUÍ ---
+        $consultaNueva = new Consulta(); // 1. Creamos una nueva consulta
+        
+        $formRegistrar = $this->createForm(ConsultaType::class, $consultaNueva, [ // 2. La pasamos al formulario
+            'action' => $this->generateUrl('app_consulta_crear', ['pacienteId' => $paciente->getId()]),
+            'is_edit_mode' => false,
         ]);
 
         $formsEditar = [];
         foreach ($consultas as $consulta) {
             $formsEditar[$consulta->getId()] = $this->createForm(ConsultaType::class, $consulta, [
-                'action' => $this->generateUrl('app_consulta_editar', ['id' => $consulta->getId()])
+                'action' => $this->generateUrl('app_consulta_editar', ['id' => $consulta->getId()]),
+                'is_edit_mode' => true,
             ])->createView();
         }
 
@@ -69,14 +79,14 @@ class ConsultaController extends AbstractController
         
         $consulta = new Consulta();
         $consulta->setPaciente($paciente);
-        $form = $this->createForm(ConsultaType::class, $consulta);
+        $form = $this->createForm(ConsultaType::class, $consulta, ['is_edit_mode' => false]);
         return $this->handleAjaxForm($request, $form, 'Consulta registrada con éxito.');
     }
 
     #[Route('/{id}/editar', name: 'app_consulta_editar', methods: ['POST'])]
     public function editar(Request $request, Consulta $consulta): JsonResponse
     {
-        $form = $this->createForm(ConsultaType::class, $consulta);
+        $form = $this->createForm(ConsultaType::class, $consulta, ['is_edit_mode' => true]);
         return $this->handleAjaxForm($request, $form, 'Consulta actualizada con éxito.');
     }
 
@@ -100,7 +110,8 @@ class ConsultaController extends AbstractController
             $this->em->flush();
 
             $formEditarView = $this->createForm(ConsultaType::class, $consulta, [
-                'action' => $this->generateUrl('app_consulta_editar', ['id' => $consulta->getId()])
+                'action' => $this->generateUrl('app_consulta_editar', ['id' => $consulta->getId()]),
+                'is_edit_mode' => true,
             ])->createView();
 
             $newRowHtml = $this->renderView('consulta/_consultaFila.html.twig', ['consulta' => $consulta]);

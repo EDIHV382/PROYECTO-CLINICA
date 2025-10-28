@@ -19,6 +19,14 @@
                     <span class="nav-text">Citas</span>
                 </a>
             </li>
+            
+            <li class="nav-item">
+                <a href="{{ path('app_consulta_index') }}" class="nav-link {{ currentRoute starts with 'app_consulta_' ? 'active' : '' }}">
+                    <i class="mdi mdi-clipboard-text-outline nav-icon"></i>
+                    <span class="nav-text">Consultas</span>
+                </a>
+            </li>
+            
             <li class="nav-item">
                 <a href="{{ path('app_pago_index') }}" class="nav-link {{ currentRoute starts with 'app_pago_' ? 'active' : '' }}">
                     <i class="mdi mdi-cash-multiple nav-icon"></i>
@@ -49,7 +57,6 @@
 </aside>
 
 <style>
-/* --- Estilos específicos del Sidebar y su Layout --- */
 :root {
     --sidebar-width: 260px;
     --sidebar-width-collapsed: 80px;
