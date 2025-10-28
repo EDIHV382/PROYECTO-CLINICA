@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Lógica del modal de selección de usuario
     const selectionModalEl = document.getElementById('modalSeleccionarUsuario');
     if (selectionModalEl) {
         const userSearchInput = document.getElementById('user-search-input');
@@ -36,12 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Lógica de cálculo en tiempo real del corte
     const formCorte = document.getElementById('form-corte-caja');
     if (formCorte) {
         const montoInicialInput = document.getElementById('corte_caja_efectivo_inicial');
         const montoFinalInput = document.getElementById('corte_caja_efectivo_final');
         const totalEfectivoCalculado = parseFloat(document.getElementById('total-efectivo-calculado')?.textContent.replace(/[^0-9.-]+/g,"")) || 0;
-        const totalGastosCalculado = parseFloat(document.getElementById('total-gastos-calculado')?.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+        
+        // --- CORRECCIÓN CLAVE ---
+        // Tomamos el valor absoluto para evitar el doble negativo, ya que el texto es "-$500.00"
+        const totalGastosCalculado = Math.abs(parseFloat(document.getElementById('total-gastos-calculado')?.textContent.replace(/[^0-9.-]+/g,""))) || 0;
+        
         const totalCajaSpan = document.getElementById('total-en-caja');
         const diferenciaSpan = document.getElementById('diferencia-corte');
         
@@ -50,33 +56,38 @@ document.addEventListener('DOMContentLoaded', () => {
             const finalContado = parseFloat(montoFinalInput.value) || 0;
             
             // --- FÓRMULA CORREGIDA ---
-            // El total esperado ahora resta los gastos del día
+            // Ahora la fórmula es correcta: Inicial + Ingresos - Gastos
             const totalEsperadoEnCaja = inicial + totalEfectivoCalculado - totalGastosCalculado;
             
             const diferencia = finalContado - totalEsperadoEnCaja;
 
             if(totalCajaSpan) totalCajaSpan.textContent = `$${totalEsperadoEnCaja.toFixed(2)}`;
             if(diferenciaSpan) {
+                // Limpia el contenido anterior antes de añadir el nuevo
                 diferenciaSpan.textContent = `$${diferencia.toFixed(2)}`;
                 diferenciaSpan.classList.remove('text-success', 'text-danger', 'text-muted');
+                
+                let textoSmall = '';
                 if (diferencia > 0) {
                     diferenciaSpan.classList.add('text-success');
-                    diferenciaSpan.innerHTML += ' <small>(Sobrante)</small>';
+                    textoSmall = ' (Sobrante)';
                 } else if (diferencia < 0) {
                     diferenciaSpan.classList.add('text-danger');
-                    diferenciaSpan.innerHTML += ' <small>(Faltante)</small>';
+                    textoSmall = ' (Faltante)';
                 } else {
                     diferenciaSpan.classList.add('text-muted');
-                    diferenciaSpan.innerHTML += ' <small>(Cuadra)</small>';
+                    textoSmall = ' (Cuadra)';
                 }
+                diferenciaSpan.innerHTML += ` <small>${textoSmall}</small>`;
             }
         };
 
         montoInicialInput.addEventListener('input', calcularCorte);
         montoFinalInput.addEventListener('input', calcularCorte);
-        calcularCorte(); // Calcular al cargar la página
+        calcularCorte(); // Calcular al cargar
     }
     
+    // Lógica del buscador del historial
     const buscadorCortes = document.getElementById('buscador-cortes');
     const tableBodyCortes = document.getElementById('cortes-table-body');
     if (buscadorCortes && tableBodyCortes) {

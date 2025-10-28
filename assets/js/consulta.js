@@ -1,6 +1,7 @@
 import * as bootstrap from 'bootstrap';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- FUNCIONES REUTILIZABLES ---
     const showNotification = (message, type = 'success') => {
         const container = document.getElementById('notification-container');
         if (!container) return;
@@ -37,12 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // --- LÓGICA DE LA PÁGINA DE CONSULTAS ---
     const grid = document.querySelector('.patient-card-grid');
     const historialContainer = document.getElementById('historial-container');
     const buscador = document.getElementById('buscador-pacientes');
 
     if (!grid || !historialContainer || !buscador) return;
-
+    
     // Lógica del Buscador de Pacientes
     buscador.addEventListener('input', e => {
         const termino = e.target.value.toLowerCase();
@@ -55,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Lógica para cargar el historial
+    // Lógica para cargar el historial en el div #historial-container
     grid.addEventListener('click', async (event) => {
         const card = event.target.closest('.patient-card');
         if (!card) return;
@@ -64,11 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.add('active');
 
         const pacienteId = card.dataset.pacienteId;
+        const urlTemplate = grid.dataset.historialUrl;
+        const url = urlTemplate.replace('__ID__', pacienteId);
+
         historialContainer.innerHTML = '<div class="text-center p-5"><div class="spinner-border"></div><p class="mt-2">Cargando historial...</p></div>';
 
         try {
-            const response = await fetch(`/consultas/historial/${pacienteId}`);
-            if (!response.ok) throw new Error('No se pudo cargar el historial.');
+            const response = await fetch(url);
+            if (!response.ok) {
+                 const errorData = await response.json();
+                 throw new Error(errorData.html || 'No se pudo cargar el historial.');
+            }
             const data = await response.json();
             historialContainer.innerHTML = data.html;
         } catch (error) {
@@ -76,7 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Lógica para las acciones DENTRO del historial cargado
+    // Manejar acciones AJAX (crear, editar, eliminar) dentro del contenedor de historial
+    // Usamos delegación de eventos en el contenedor
     historialContainer.addEventListener('submit', (event) => {
         const form = event.target.closest('form');
         if (!form) return;

@@ -6,6 +6,7 @@
   --color-primary-dark: #1e3a8a;
   --color-primary-light: #3b82f6;
   --color-bg: #ffffff;
+  --color-surface: #ffffff;
   --color-sidebar: #ffffff;
   --color-text: #0f172a;
   --color-text-muted: #64748b;
@@ -49,6 +50,7 @@ body.dark-mode {
   --color-primary-dark: #3b82f6;
   --color-primary-light: #93c5fd;
   --color-bg: #0f172a;
+  --color-surface: #2d3a4e;
   --color-sidebar: #1e293b;
   --color-text: #e2e8f0;
   --color-text-muted: #94a3b8;
