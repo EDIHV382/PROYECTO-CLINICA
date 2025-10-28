@@ -1,15 +1,16 @@
-### Symfony ###
+.env
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-/public/build/
 /var/
 /vendor/
+/phpunit.xml
+/.phpunit.cache/
+/public/assets/
+/assets/vendor/
 /node_modules/
-/composer.phar
-
-### Archivos de Entorno ###
-.env
-.env.local
-.env.*.local
-
-### Archivos de Sistema ###
-*.DS_Store
+/public/build/
+npm-debug.log
+yarn-error.log
